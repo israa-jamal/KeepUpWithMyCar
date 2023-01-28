@@ -21,6 +21,15 @@ class Repository {
         }
     }
     
+    static var kilometers: Int {
+        return UserDefaults.standard.integer(forKey: "km") ?? 0
+    }
+
+    static func setKilometers(_ km: Int) {
+        UserDefaults.standard.set(km, forKey: "km")
+        UserDefaults.standard.synchronize()
+    }
+    
     func addStaticData() {
 //        let types: [ToolTypes] = ToolTypes.allCases
 //        for type in types {
@@ -66,5 +75,17 @@ class Repository {
         {
             print ("There was an error")
         }
+    }
+    
+    func delete(tool: Tool) {
+        let context = persistentContainer.viewContext
+        if let data = try? context.fetch(UserEntry.fetchRequest()) {
+            for object in data {
+                if object.tool == tool.rawValue {
+                    context.delete(object)
+                }
+            }
+        }
+        saveContext()
     }
 }

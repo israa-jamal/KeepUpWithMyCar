@@ -157,6 +157,7 @@ struct ToolDetail: View {
     }
     
     func saveData() {
+        Repository.shared.delete(tool: tool)
         let entry = UserEntry(context: viewContext)
         entry.tool = tool.rawValue
         entry.kilometers = Int32(text) ?? 0
